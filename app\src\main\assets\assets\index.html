@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#151b2b">
+    <meta name="description" content="План смен такси, расчёт дохода после топлива и городские рекомендации для Краснодара.">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="icons/ritm-192.png" sizes="192x192" type="image/png">
+    <link rel="apple-touch-icon" href="icons/ritm-192.png">
+    <link rel="stylesheet" href="styles.css">
+    <title>Ритм — план смен</title>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" aria-label="Ритм, главная">
+          <span class="brand-mark"><img src="icons/ritm-192.png" alt=""></span>
+          <span><strong>ритм</strong><small>план смен</small></span>
+        </a>
+        <div class="topbar-right">
+          <span class="live-pill"><i></i><span id="sync-label">обновляю данные</span></span>
+          <button id="install-button" class="icon-button install-button" aria-label="Установить приложение" hidden>↓</button>
+          <button id="settings-shortcut" class="avatar-button" aria-label="Открыть профиль">И</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="page-section active" id="overview-page" aria-labelledby="overview-title">
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow" id="today-label">ПЛАН НА СЕГОДНЯ</p>
+              <h1 id="overview-title">Добрый день</h1>
+              <p class="subtle"><span id="city-label">Краснодар</span> <span class="dot-sep">·</span> <span id="car-label">добавь автомобиль в профиле</span></p>
+            </div>
+            <button id="refresh-button" class="refresh-button" aria-label="Обновить прогноз" title="Обновить данные">↻</button>
+          </div>
+
+          <article class="goal-card">
+            <div class="goal-copy">
+              <div class="card-kicker light">ЦЕЛЬ НА МЕСЯЦ <button class="text-button light" data-page="profile">изменить</button></div>
+              <div class="goal-amount"><span id="month-earned">—</span><span class="goal-total"> / <span id="goal-total">200 000</span> ₽</span></div>
+              <div class="goal-progress"><span id="goal-progress-bar"></span></div>
+              <div class="goal-foot"><span id="goal-progress-text">—</span><span id="goal-days-text">—</span></div>
+            </div>
+            <div class="goal-ring" id="goal-ring"><div><b id="goal-percent">0%</b><small>цели</small></div></div>
+          </article>
+
+          <div class="section-heading">
+            <div><p class="eyebrow">ТВОЙ РАСЧЁТ</p><h2>Сколько остаётся после бензина</h2></div>
+            <button class="text-button" data-page="journal">добавить смену <span>＋</span></button>
+          </div>
+          <div class="metric-grid">
+            <article class="metric-card"><span class="metric-icon mint">↗</span><small>за час по последней смене</small><strong id="net-hour">—</strong><span class="metric-caption">после бензина</span></article>
+            <article class="metric-card"><span class="metric-icon peach">◉</span><small>бензин на 100 км</small><strong id="fuel-100">—</strong><span class="metric-caption">расход и цена топлива</span></article>
+          </div>
+
+          <article class="target-card">
+            <div class="target-head"><div><p class="eyebrow">ДО ЦЕЛИ</p><h3 id="target-headline">—</h3></div><span class="target-badge" id="target-badge">по твоим данным</span></div>
+            <div class="target-stats">
+              <div><small>осталось заработать</small><b id="goal-remaining">—</b></div>
+              <div><small>нужно часов за месяц</small><b id="hours-month">—</b></div>
+              <div><small>часов в рабочий день</small><b id="hours-workday">—</b></div>
+            </div>
+            <p class="micro-note" id="target-caveat">Расчёт по последней смене; обслуживание и износ авто не включены.</p>
+          </article>
+
+          <div class="section-heading compact-heading">
+            <div><p class="eyebrow">АВТОПЛАН</p><h2>Ближайшие смены</h2></div>
+            <button class="text-button" data-page="forecast">весь прогноз <span>→</span></button>
+          </div>
+          <div id="overview-plan" class="plan-list"></div>
+          <div class="baseline-card"><div class="baseline-top"><span class="baseline-icon">↗</span><div><b>Твои показатели появятся здесь</b><small>Добавляй смены, чтобы сравнивать дни и часы</small></div></div></div>
+          <p class="fine-print">Установи приложение на своём устройстве, заполни профиль и добавь смены. Данные других водителей в APK не включены.</p>
+        </section>
+
+        <section class="page-section" id="forecast-page" aria-labelledby="forecast-title">
+          <div class="section-heading page-title-row">
+            <div><p class="eyebrow">ПОГОДА + СОБЫТИЯ + ТВОИ СМЕНЫ</p><h1 id="forecast-title">Когда выходить</h1></div>
+            <button id="forecast-refresh" class="refresh-button" aria-label="Обновить прогноз">↻</button>
+          </div>
+          <article class="weather-card">
+            <div class="weather-icon" id="weather-icon">☁</div>
+            <div class="weather-main"><small id="weather-location">Краснодар · сейчас</small><strong id="weather-now">—</strong><span id="weather-summary">загружаю погоду…</span></div>
+            <div class="weather-side"><span>осадки</span><b id="weather-rain">—</b><span>ветер</span><b id="weather-wind">—</b></div>
+          </article>
+          <div class="source-row"><span class="source-status"><i id="weather-status-dot"></i><span id="weather-status">Прогноз погоды загружается автоматически</span></span><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Open-Meteo ↗</a></div>
+
+          <article class="schedule-card">
+            <div class="schedule-heading"><div><p class="eyebrow">ПЛАН НА НЕДЕЛЮ</p><h2 id="auto-plan-title">Собираю твой график</h2></div><span class="auto-tag"><i></i>автоплан</span></div>
+            <p class="schedule-summary" id="auto-plan-summary">Сопоставляю часы спроса, погоду и события.</p>
+            <div id="weekly-plan" class="weekly-plan"></div>
+            <div class="safety-note" id="safety-note"></div>
+          </article>
+
+          <div class="section-heading compact-heading">
+            <div><p class="eyebrow">ЛУЧШИЕ ОКНА</p><h2>Когда и где ждать спрос</h2></div>
+            <span class="small-pill">7 дней</span>
+          </div>
+          <div id="windows-list" class="windows-list"></div>
+          <div class="confidence-note"><span>ⓘ</span><p><b>Индекс спроса — ориентир, не обещание заказов.</b> В приложении нет внутренних данных Яндекс Про о спросе по районам. Оценка складывается из обычных часов поездок, прогноза погоды, афиши и твоих записанных смен.</p></div>
+
+          <div class="section-heading compact-heading event-heading">
+            <div><p class="eyebrow">ГОРОДСКАЯ АФИША</p><h2>События рядом</h2></div>
+            <span id="events-count" class="small-pill">—</span>
+          </div>
+          <div class="events-source"><span>Автоматически из афиши · страница читается через Reader</span><a href="https://afisha-krasnodar.ru/list/all/" target="_blank" rel="noreferrer">источник ↗</a></div>
+          <div id="events-list" class="events-list"><div class="loading-line"><span class="spinner"></span>Загружаю афишу на ближайшие дни</div></div>
+          <p class="fine-print">Афиша может пропускать или менять события. Для каждого события есть ссылка на источник. Влияние мероприятия на спрос оценочное.</p>
+        </section>
+
+        <section class="page-section" id="journal-page" aria-labelledby="journal-title">
+          <div class="section-heading page-title-row"><div><p class="eyebrow">ТВОИ РЕЗУЛЬТАТЫ</p><h1 id="journal-title">Журнал смен</h1></div></div>
+          <div class="journal-summary" id="journal-summary"></div>
+          <article class="form-card">
+            <div class="form-title"><div><p class="eyebrow">НОВАЯ ЗАПИСЬ</p><h2>Добавить смену</h2></div><span class="form-badge">запишется на этом устройстве</span></div>
+            <form id="shift-form" class="entry-form">
+              <label>Дата<input name="date" type="date" required></label>
+              <div class="two-inputs"><label>Начал<input name="start" type="time" value="16:00" required></label><label>Закончил<input name="end" type="time" value="20:00" required></label></div>
+              <div class="two-inputs"><label>Поездки<input name="rides" type="number" min="0" step="1" value="0" required></label><label>Доход по заказам, ₽<input name="income" type="number" min="0" step="0.01" placeholder="после комиссии и налога" required></label></div>
+              <div class="two-inputs"><label>Пробег за смену, км<input name="km" type="number" min="0" step="0.1" placeholder="весь пробег"></label><label>Бонус отдельно, ₽<input name="bonus" type="number" min="0" step="0.01" value="0"></label></div>
+              <label>Заметка<input name="note" type="text" maxlength="120" placeholder="например, дождь или концерт"></label>
+              <button class="primary-button" type="submit">Сохранить смену <span>→</span></button>
+            </form>
+          </article>
+          <div class="section-heading compact-heading"><div><p class="eyebrow">НЕДАВНИЕ ВЫХОДЫ</p><h2>История</h2></div><button id="export-button" class="text-button">экспорт CSV ↓</button></div>
+          <div id="shift-list" class="shift-list"></div>
+          <div class="imported-note"><b>Журнал на этом устройстве</b><p>Новая установка начинается с пустой историей. Добавляй завершённые смены — приложение сохранит их только в этом экземпляре приложения.</p></div>
+        </section>
+
+        <section class="page-section" id="profile-page" aria-labelledby="profile-title">
+          <div class="section-heading page-title-row"><div><p class="eyebrow">МАШИНА И ЦЕЛИ</p><h1 id="profile-title">Профиль</h1></div></div>
+          <article class="profile-card">
+            <div class="profile-person"><span class="profile-avatar">В</span><div><strong>Водитель Яндекс Про</strong><small><span id="profile-city-label">Краснодар</span> · <span id="class-label">тариф не указан</span></small></div><span class="check-mark">✓</span></div>
+            <div class="mini-divider"></div>
+            <div class="car-row"><span class="car-icon">▰</span><div><b id="car-title">Автомобиль не указан</b><small>Средний расход топлива</small></div><span class="car-value" id="car-consumption-label">расход не указан</span></div>
+          </article>
+          <article class="form-card profile-form-card">
+            <div class="form-title"><div><p class="eyebrow">ПЛАНИРОВАНИЕ</p><h2>Настройки расчёта</h2></div></div>
+            <form id="profile-form" class="entry-form">
+              <label>Марка автомобиля<input name="carMake" type="text" maxlength="35" value=""></label>
+              <div class="two-inputs"><label>Модель<input name="carModel" type="text" maxlength="35" value=""></label><label>Класс в Яндекс Про<input name="serviceClass" type="text" maxlength="35" value=""></label></div>
+              <label>Город для погоды и прогноза<input name="cityName" type="text" maxlength="60" value="Краснодар" required></label>
+              <label>Цель чистыми после бензина, ₽ / месяц<input name="monthlyGoal" type="number" min="10000" step="5000" value="200000"></label>
+              <div class="two-inputs"><label>Расход, л / 100 км<input name="fuelConsumption" type="number" min="1" step="0.1" value="" required></label><label>Цена топлива, ₽ / л<input name="fuelPrice" type="number" min="1" step="0.5" value="" required></label></div>
+              <div class="two-inputs"><label>Рабочих дней в месяц<input name="workingDays" type="number" min="1" max="31" step="1" value="24"></label><label>Максимум часов за смену<input name="maxShiftHours" type="number" min="1" max="18" step="1" value="9"></label></div>
+              <p class="field-hint">Укажи свой расход и фактическую цену заправки. Приложение вычитает только топливо.</p>
+              <button class="primary-button" type="submit">Сохранить настройки <span>✓</span></button>
+            </form>
+          </article>
+          <article class="profile-info-card"><div class="info-icon">✦</div><div><b>Как строится прогноз</b><p>Погода загружается для указанного города. Автоматическая афиша доступна для Краснодара. График учитывает часы пик, погоду, события и твои записи смен.</p><div class="source-links"><a href="https://afisha-krasnodar.ru/list/all/" target="_blank" rel="noreferrer">Афиша Краснодара ↗</a><a href="https://open-meteo.com/" target="_blank" rel="noreferrer">Погода Open-Meteo ↗</a></div></div></article>
+          <article class="creator-card">
+            <img class="creator-logo" src="ritm-logo.jpg" alt="Логотип приложения Ритм">
+            <div class="creator-meta"><p class="eyebrow">О ПРИЛОЖЕНИИ</p><strong>«Ритм» by Evgeny Ivanov</strong><small>Создатель приложения</small><a href="https://t.me/evgeny9149" target="_blank" rel="noreferrer">@evgeny9149 ↗</a></div>
+          </article>
+          <article class="privacy-card"><span>▣</span><p>Доходы, настройки и журнал хранятся в памяти браузера на этом устройстве. За погодой и расписанием событий приложение обращается к интернету.</p></article>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Основная навигация">
+        <button class="nav-item active" data-page="overview" aria-label="Обзор"><span class="nav-icon">⌂</span><small>Обзор</small></button>
+        <button class="nav-item" data-page="forecast" aria-label="Прогноз"><span class="nav-icon">◷</span><small>Прогноз</small></button>
+        <button class="nav-item" data-page="journal" aria-label="Смены"><span class="nav-icon">▤</span><small>Смены</small></button>
+        <button class="nav-item" data-page="profile" aria-label="Профиль"><span class="nav-icon">◉</span><small>Профиль</small></button>
+      </nav>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </div>
+    <script src="app.js" defer></script>
+  </body>
+</html>

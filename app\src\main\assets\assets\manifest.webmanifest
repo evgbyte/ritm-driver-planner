@@ -1,0 +1,17 @@
+{
+  "name": "Ритм — план смен такси",
+  "short_name": "Ритм",
+  "description": "Доход после бензина, автоматический прогноз погоды и событий Краснодара, план смен.",
+  "lang": "ru-RU",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f4f6f9",
+  "theme_color": "#151b2b",
+  "categories": ["lifestyle", "finance", "productivity"],
+  "icons": [
+    { "src": "icons/ritm-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/ritm-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
